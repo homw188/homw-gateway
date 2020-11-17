@@ -1,0 +1,39 @@
+# Compiled class file
+*.class
+
+# Log file
+*.log
+
+# BlueJ file
+*.ctxt
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package file
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# JVM crash logs
+hs_err_pid*
+
+# Maven output target
+/target/
+
+# Eclipse project file
+.classpath
+.project
+.pydevproject
+/.settings/
+
+# IntelliJ IDEA project file
+/.idea/
+*.iml
+
+# Mac file
+.DS_Store

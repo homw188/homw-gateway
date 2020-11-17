@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+	
+	<bean id="schedulerFactoryBean" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+            <list>
+                <ref bean="readElecBatchJobTriggerBean"/>
+                <ref bean="readElecReferNodeBatchJobTriggerBean"/>
+                <ref bean="readWaterBatchJobTriggerBean"/>
+            </list>
+        </property>
+		<property name="autoStartup" value="true"/>
+		<property name="applicationContextSchedulerContextKey" value="applicationContext" />
+	</bean>
+	
+	<bean id="readElecBatchJobDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">  
+        <property name="jobClass" value="com.homw.gateway.admin.job.ReadElecBatchJob" />  
+        <property name="durability" value="true"/>  
+        <property name="group" value="AUTOGROUP"/>
+        <property name="name" value="queryElecBatch"/>
+    </bean>
+    <bean id="readElecBatchJobTriggerBean" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">  
+        <property name="jobDetail" ref="readElecBatchJobDetail"/>  
+        <property name="cronExpression" value="0 0 0/2 * * ?"/>
+    </bean>
+    
+    <bean id="readElecReferNodeBatchJobDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">  
+        <property name="jobClass" value="com.homw.gateway.admin.job.ReadElecReferNodeBatchJob" />  
+        <property name="durability" value="true"/>  
+        <property name="group" value="AUTOGROUP"/>
+        <property name="name" value="queryReferNode"/>
+    </bean>
+    <bean id="readElecReferNodeBatchJobTriggerBean" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">  
+        <property name="jobDetail" ref="readElecReferNodeBatchJobDetail"/>
+        <property name="cronExpression" value="0 0 0/1 * * ?"/>
+    </bean> 
+    
+    <bean id="readWaterBatchJobDetail" class="org.springframework.scheduling.quartz.JobDetailFactoryBean">  
+		<property name="jobClass" value="com.homw.gateway.admin.job.ReadWaterBatchJob" />  
+        <property name="durability" value="true"/>
+        <property name="group" value="AUTOGROUP"/>
+        <property name="name" value="queryWaterBatch"/>
+    </bean>
+    <bean id="readWaterBatchJobTriggerBean" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">  
+        <property name="jobDetail" ref="readWaterBatchJobDetail"/>
+        <property name="cronExpression" value="0 30 0/2 * * ?"/>
+    </bean>
+</beans>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<taglib>  
+    <tlib-version>1.1</tlib-version>
+    <jsp-version>1.2</jsp-version>
+    <short-name>date</short-name>
+    <description>date taglib</description>
+    <tag>
+        <name>date</name>  
+        <tag-class>com.homw.gateway.admin.util.JSTLDateUtil</tag-class>          
+        <attribute>  
+            <name>value</name> <!-- 标签名 --> 
+            <required>true</required> <!-- 标签的属性是否是必须的 -->
+            <rtexprvalue>true</rtexprvalue> <!-- 是否为动态标签 -->
+        </attribute>
+		<attribute>  
+            <name>parttern</name>  
+            <required>true</required>  
+            <rtexprvalue>true</rtexprvalue>  
+        </attribute>    
+    </tag>  
+	<tag>
+    	<description>权限校验标签，有权限就显示标签体的内容，否则不显示</description>
+		<name>securitys</name> <!-- 标签名 -->
+		<tagclass>com.homw.gateway.admin.util.JSTLSecurityUtil</tagclass>
+		<attribute>
+			<description></description>
+			<name>elementType</name> <!-- 属性名 -->
+			<required>true</required> <!-- 标签的属性是否是必须的 -->
+			<rtexprvalue>true</rtexprvalue> <!-- 是否为动态标签 -->
+		</attribute>
+	</tag>
+</taglib>

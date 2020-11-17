@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:rabbit="http://www.springframework.org/schema/rabbit"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+			http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+			http://www.springframework.org/schema/rabbit http://www.springframework.org/schema/rabbit/spring-rabbit-1.7.xsd">
+	
+	<!-- 定义连接工厂 -->
+	<rabbit:connection-factory id="rabbitConnectionFactory" host="${rabbit.host}" username="${rabbit.username}"
+		password="${rabbit.password}" port="${rabbit.port}" virtual-host="${rabbit.virtualHost}" channel-cache-size="${rabbit.channelCacheSize}" />
+		
+	<!-- 定义admin, producer中的exchange,queue会自动的利用该admin自动在spring中生成 -->
+	<rabbit:admin connection-factory="rabbitConnectionFactory" />
+	
+	<!-- 定义项目队列 -->
+	<rabbit:queue name="${rabbit.queue}" durable="true" auto-delete="false" exclusive="false" />
+
+	<!-- 定义交换机，与项目队列绑定关系 -->
+	<rabbit:direct-exchange name="${rabbit.exchange.direct}" durable="true" auto-delete="false">
+		<rabbit:bindings>
+			<rabbit:binding queue="${rabbit.queue}" key="${rabbit.routingKey}" />
+		</rabbit:bindings>
+	</rabbit:direct-exchange>
+
+	<!-- 定义监听器与队列绑定关系 -->
+	<rabbit:listener-container connection-factory="rabbitConnectionFactory" acknowledge="manual">
+		<rabbit:listener ref="rabbitmqMessageListener" queue-names="${rabbit.queue}"/>
+	</rabbit:listener-container>
+	
+	<!-- 定义消费者监听器 -->
+	<bean id="rabbitmqMessageListener" class="com.homw.gateway.listener.RabbitmqMessageListener"/>
+</beans>

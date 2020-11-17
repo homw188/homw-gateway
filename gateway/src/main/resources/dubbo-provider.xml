@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:dubbo="http://dubbo.apache.org/schema/dubbo"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd 
+    		http://dubbo.apache.org/schema/dubbo http://dubbo.apache.org/schema/dubbo/dubbo.xsd">
+
+    <!-- 提供方应用信息，用于计算依赖关系 -->
+    <dubbo:application name="gateway"/>
+
+    <!-- 使用redis注册中心暴露服务地址 -->
+    <dubbo:registry protocol="redis" address="virtual:${redis.pass}@${redis.host}:${redis.port}"/>
+
+    <!-- 用dubbo协议在20880端口暴露服务 -->
+    <dubbo:protocol name="dubbo" port="20880"/>
+    
+    <!-- 从注册中心发现监控中心地址 -->
+    <!-- <dubbo:monitor protocol="registry"/> -->
+    
+    <!-- 服务接口缺省配置 -->
+    <dubbo:provider timeout="30000" retries="0" threads="100" threadpool="fixed" accepts="200"/>
+
+    <!-- 声明需要暴露的服务接口 -->
+    <dubbo:service interface="com.homw.gateway.api.device.IDoorDevice" ref="doorDeviceProxy"/>
+    <dubbo:service interface="com.homw.gateway.api.device.IElecDevice" ref="elecDeviceProxy"/>
+    <dubbo:service interface="com.homw.gateway.api.device.IWaterDevice" ref="waterDeviceProxy"/>
+</beans>
