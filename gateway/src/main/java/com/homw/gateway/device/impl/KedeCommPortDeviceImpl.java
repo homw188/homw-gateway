@@ -39,9 +39,9 @@ import gnu.io.SerialPortEvent;
 import gnu.io.SerialPortEventListener;
 
 @Service("kedeCommPortElecDevice")
-public class KedeCommPortElecDeviceImpl implements ICommPortDevice, ApplicationEventPublisherAware {
+public class KedeCommPortDeviceImpl implements ICommPortDevice, ApplicationEventPublisherAware {
 
-	private static Logger logger = LoggerFactory.getLogger(KedeCommPortElecDeviceImpl.class);
+	private static Logger logger = LoggerFactory.getLogger(KedeCommPortDeviceImpl.class);
 
 	private SerialPort serialPort;
 	private InputStream inputStream;
