@@ -39,7 +39,7 @@ public class KedeElecDeviceImpl implements IElecDevice {
 	private DeviceConstant.ElecProtocol elecProto;
 
 	@Autowired
-	private ICommPortDevice kedeCommPortElecDevice;
+	private ICommPortDevice kedeCommPortDevice;
 
 	@PostConstruct
 	public void init() {
@@ -73,7 +73,7 @@ public class KedeElecDeviceImpl implements IElecDevice {
 				return Pair.of(Boolean.TRUE, backData);
 			}
 		} else {
-			return Pair.of(kedeCommPortElecDevice.open(deviceInfo.getElecAddr()), null);
+			return Pair.of(kedeCommPortDevice.open(deviceInfo.getElecAddr()), null);
 		}
 		return Pair.of(Boolean.FALSE, backData);
 	}
@@ -94,7 +94,7 @@ public class KedeElecDeviceImpl implements IElecDevice {
 				return Pair.of(Boolean.TRUE, backData);
 			}
 		} else {
-			return Pair.of(kedeCommPortElecDevice.close(deviceInfo.getElecAddr()), null);
+			return Pair.of(kedeCommPortDevice.close(deviceInfo.getElecAddr()), null);
 		}
 		return Pair.of(Boolean.FALSE, backData);
 	}
@@ -115,7 +115,7 @@ public class KedeElecDeviceImpl implements IElecDevice {
 				return Pair.of(Boolean.TRUE, Double.parseDouble(data.getLj()));
 			}
 		} else {
-			return Pair.of(kedeCommPortElecDevice.search(deviceInfo.getElecAddr()), null);
+			return Pair.of(kedeCommPortDevice.search(deviceInfo.getElecAddr()), null);
 		}
 		return Pair.of(Boolean.FALSE, null);
 	}
