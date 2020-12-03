@@ -424,7 +424,7 @@ public class KedeProtocolUtil {
 			hex = Integer.toHexString(0xFF & bArr[i]);
 			if (hex.length() < 2)
 				sb.append(0);
-			sb.append(hex.toUpperCase());
+			sb.append(hex);
 		}
 		return sb.toString();
 	}
