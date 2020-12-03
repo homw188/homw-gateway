@@ -14,7 +14,7 @@
 		</filter>
      	<File>${logpath:-logs}/gateway.log</File>
      	<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-     		<fileNamePattern>${logpath:-logs}/gateway.%d{yyyy-MM-dd_HH}.log</fileNamePattern>
+     		<fileNamePattern>${logpath:-logs}/gateway.%d{yyyy-MM-dd}.log</fileNamePattern>
 			<maxHistory>30</maxHistory>
      	</rollingPolicy>
 		<layout class="ch.qos.logback.classic.PatternLayout">
