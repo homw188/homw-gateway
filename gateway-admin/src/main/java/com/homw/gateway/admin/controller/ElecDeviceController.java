@@ -12,6 +12,7 @@ import javax.validation.Validator;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.tuple.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -259,6 +260,9 @@ public class ElecDeviceController extends BaseController {
 
 	@RequestMapping("/searchAll")
 	public MapResponse searchAll() throws Exception {
+		int failCnt = 0;
+		int exceptCnt = 0;
+		Exception except = null;
 		List<DeviceInfo> deviceList = publicDeviceService.findPowerAllListbypam(Constant.MessageType.ELECTRIC.name());
 		if (!CollectionUtils.isEmpty(deviceList)) {
 			for (DeviceInfo device : deviceList) {
@@ -266,23 +270,36 @@ public class ElecDeviceController extends BaseController {
 					DeviceInfo deviceInfo = redisDeviceInfoService.redisHMGetDeviceInfo(device.getOuterNo(),
 							Constant.MessageType.ELECTRIC.name());
 					try {
-						Thread.sleep(1000);
 						logger.info("elecAddr: {}", deviceInfo.getElecAddr());
-						elecDevice.search(deviceInfo);
+						Pair<Boolean, Double> pair = elecDevice.search(deviceInfo);
+						if (!pair.getLeft()) {
+							failCnt++;
+						}
 					} catch (Exception e) {
 						e.printStackTrace();
-						if (e instanceof ServiceException) {
-							ServiceException serviceException = (ServiceException) e;
-							String message = messageSource.getMessage("error.code." + serviceException.getCode(),
-									new Object[] {}, serviceException.getMessage(), Locale.CHINA);
-							return new MapResponse(serviceException.getCode(), message);
-						} else {
-							return new MapResponse("000001", "电表读取数据异常!");
+						if (except == null) {
+							except = e;
 						}
+						exceptCnt++;
 					}
 					logger.info("search all elec success");
 				} else {
 					throw new ServiceException(ErrorCode.SYSTEM_ERROR, "search all elec device is not exists");
+				}
+			}
+
+			if (failCnt >= deviceList.size()) {
+				return new MapResponse("000001", "抄表失败，请稍后再试");
+			}
+
+			if (exceptCnt >= deviceList.size() && except != null) {
+				if (except instanceof ServiceException) {
+					ServiceException serviceException = (ServiceException) except;
+					String message = messageSource.getMessage("error.code." + serviceException.getCode(),
+							new Object[] {}, serviceException.getMessage(), Locale.CHINA);
+					return new MapResponse(serviceException.getCode(), message);
+				} else {
+					return new MapResponse("999999", "抄表失败，请稍后再试");
 				}
 			}
 		}
