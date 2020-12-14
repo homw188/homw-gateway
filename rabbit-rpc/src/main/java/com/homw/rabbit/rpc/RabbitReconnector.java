@@ -8,7 +8,7 @@ import com.rabbitmq.client.*;
 
 public class RabbitReconnector implements ShutdownListener, Runnable {
 
-	private static Logger log = LoggerFactory.getLogger(RabbitConnector.class);
+	private static Logger log = LoggerFactory.getLogger(RabbitReconnector.class);
 
 	public static interface ReconnectHandler {
 		boolean reconnect() throws Exception;
