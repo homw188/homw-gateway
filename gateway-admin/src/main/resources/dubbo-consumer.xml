@@ -12,13 +12,14 @@
     </dubbo:application>
 
     <!-- 使用redis注册中心暴露发现服务地址 -->
-    <dubbo:registry protocol="redis" address="virtual:${redis.pass}@${redis.host}:${redis.port}"/>
+    <!-- <dubbo:registry protocol="redis" address="virtual:${redis.pass}@${redis.host}:${redis.port}"/> -->
+    <dubbo:registry address="N/A"/>
     
     <!-- 从注册中心发现监控中心地址 -->
     <!-- <dubbo:monitor protocol="registry"/> -->
 
     <!-- 生成远程服务代理-->
-    <dubbo:reference id="doorDevice" interface="com.homw.gateway.api.device.IDoorDevice" check="false"/>
-    <dubbo:reference id="elecDevice" interface="com.homw.gateway.api.device.IElecDevice" check="false"/>
-    <dubbo:reference id="waterDevice" interface="com.homw.gateway.api.device.IWaterDevice" check="false"/>
+    <dubbo:reference id="doorDevice" interface="com.homw.gateway.api.device.IDoorDevice" check="false" url="dubbo://127.0.0.1:20880"/>
+    <dubbo:reference id="elecDevice" interface="com.homw.gateway.api.device.IElecDevice" check="false" url="dubbo://127.0.0.1:20880"/>
+    <dubbo:reference id="waterDevice" interface="com.homw.gateway.api.device.IWaterDevice" check="false" url="dubbo://127.0.0.1:20880"/>
 </beans>
